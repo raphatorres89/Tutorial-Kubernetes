@@ -22,3 +22,13 @@ kubectl version
 kubectl cluster-info
 kubectl get nodes
 ```
+
+# 2 Fazendo Deploy
+
+Quando uma aplicação é criada, o Kubernetes Deployment Controller monitora continuamente essa instância. Se o node hospedado cair ou for deletado, o Deployment Controller recoloca a instância com outro node no cluster. **Esta é um mecanismo de auto-recuperação para falhas de endereçamento ou manutenção**.
+
+### Deploy do app no Kubernetes
+
+![](https://d33wubrfki0l68.cloudfront.net/152c845f25df8e69dd24dd7b0836a289747e258a/4a1d2/docs/tutorials/kubernetes-basics/public/images/module_02_first_app.svg)
+
+...
