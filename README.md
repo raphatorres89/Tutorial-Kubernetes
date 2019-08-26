@@ -1,5 +1,7 @@
 # kubernetes-tutorial
-Tutorial criado utilizando o material disponibilizado no site do Kubernetes
+Tutorial criado utilizando o material disponibilizado no [site do Kubernetes](https://kubernetes.io/docs/tutorials/kubernetes-basics/)
+
+Site de apoio [katacode](https://www.katacoda.com/courses/kubernetes)
 
 # 1 Criando um cluster Kubernetes 
 
