@@ -87,6 +87,74 @@ Algumas operações do Kubernetes:
 - *kubectl logs* printa os logs de um container em um pod
 - *kubectl exec* executa um comando em um container em um pod
 
+# 4 Expondo o app
+
+### Services
+
+Um node  mortal. Ele tem ciclo de vida. Quando um node morre, os pods que rodam no nó ficam perdidos. O ReplicaSet deve então dinamicamente direcionar de volta ao estado desejado criando um novo pod para manter a aplicação rodando.
+Um `service` é uma abstração que define um conjunto lógico de Pods e uma política para poder acessá-los. 
+Como os pods possuem um único IP, esses IPs não ficam expostos ao cluster sem um service.
+Services podem ser expostos em diferentes formas especificando um `type` no ServiceSpec.
+
+- ClusterIP    | Expõe o Service em um IP interno no cluster. Service fica disponível apenas dentro do cluster.
+- NodePort     | Expõe o Service na mesma porta do Node selecionado no cluster utilizando NAT. Possível acesso externo utilizando `<NodeIP>:<NodePort>
+- LoadBalancer | Cria um loadBalancer na núvem atual e define um IP externo fixo ao service.
+- ExternalName | Expõe o Service utiliazndo um nome arbitrário (especificado pelo `externalName`) retornando um CNAME. Nenhum proxy é utilizado. Requer a v1.7 ou maior do `kube-dns`.
+
+![](https://d33wubrfki0l68.cloudfront.net/cc38b0f3c0fd94e66495e3a4198f2096cdecd3d5/ace10/docs/tutorials/kubernetes-basics/public/images/module_04_services.svg)
+
+É possível alcançar um grupo de pods utilizando labels e selectors.
+- Designar objetos para desenvolvimento, teste e produção.
+- Injetar tags de versão
+- Classificar um objeto utilizando tags.
+
+![](https://d33wubrfki0l68.cloudfront.net/b964c59cdc1979dd4e1904c25f43745564ef6bee/f3351/docs/tutorials/kubernetes-basics/public/images/module_04_labels.svg)
+
+### Criando um novo service
+
+```bash
+kubectl get pods
+kubectl get services
+kubectl expose deployment/kubernetes-bootcamp --type="NodePort" -- 8080
+kubectl get services
+
+kubectl describe services/kubernetes-bootcamp
+
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+curl $(minikube ip):$NODE_PORT
+```
+
+### Utilizando labels
+
+```bash
+kubectl describe deployment
+kubectl get pods -l run=kubernetes-bootcamp
+kubectl get services -l run=kubernetes-bootcamp
+
+export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+echo Name of the Pod: $POD_NAME
+
+kubectl label pod $POD_NAME app=v1
+kubectl describe pods $POD_NAME
+kubectl get pods -l app=v1
+```
+
+### Deletando um Service
+
+```bash
+kubectl delete service -l run=kubernetes-bootcamp
+kubectl get services
+curl $(minikube ip):$NODE_PORT
+kubectl exec -ti $POD_NAME curl localhost:8080
+```
+
+```bash
+
+```
+
+
 
 ### Criando o Deployment
 
