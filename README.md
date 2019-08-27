@@ -188,10 +188,62 @@ kubectl get deployments
 kubectl get pods -o wide
 ```
 
-```bash
+# Atualizando o app
 
+Usuários esperam que aplicações estejam disponíveis o tempo todo, e desenvolvedores esperam poder criar deploys várias vezes ao dia. No Kubernetes isto é feito através do rolling updates.
+*Rolling Updates* permitem atualização de Deployments com zero downtime ao incrementar atualizações aos Pods.
+
+![](https://d33wubrfki0l68.cloudfront.net/30f75140a581110443397192d70a4cdb37df7bfc/fa906/docs/tutorials/kubernetes-basics/public/images/module_06_rollingupdates1.svg)
+
+![](https://d33wubrfki0l68.cloudfront.net/678bcc3281bfcc588e87c73ffdc73c7a8380aca9/703a2/docs/tutorials/kubernetes-basics/public/images/module_06_rollingupdates2.svg)
+
+![](https://d33wubrfki0l68.cloudfront.net/9b57c000ea41aca21842da9e1d596cf22f1b9561/91786/docs/tutorials/kubernetes-basics/public/images/module_06_rollingupdates3.svg)
+
+![](https://d33wubrfki0l68.cloudfront.net/6d8bc1ebb4dc67051242bc828d3ae849dbeedb93/fbfa8/docs/tutorials/kubernetes-basics/public/images/module_06_rollingupdates4.svg)
+
+> Se um Deployment estiver exposto publicamente, o Service vai balancear o tráfego apenas para Pods disponíveis durante o update.
+
+Rolling updates permitem as seguintes funções:
+- Promover uma aplicação de um ambiente para outro (via atualização de imagem de container)
+- Rollback para versões anteriores
+- Integração contínua e Entrega contínua com zer downtime
+
+### Atualizando a versão do app
+
+```bash
+kubectl get deployments
+kubectl get pods
+kubectl describe pods
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+kubectl get pods
+```
+### Verificar um update
+
+```bash
+kubectl describe services/kubernetes-bootcamp
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+curl $(minikube ip):$NODE_PORT
+
+kubectl rollout status deployments/kubernetes-bootcamp
+kubectl describe pods
 ```
 
+### Reverter um update (Rollback)
+
+```bash
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=gcr.io/google-samples/kubernetes-bootcamp:v10
+kubectl get deployments
+kubectl get pods
+kubectl describe pods
+
+kubectl rollout undo deployments/kubernetes-bootcamp
+
+kubectl get pods
+kubectl describe pods
+```
+# Utilizando configurações via Yaml
 
 ### Criando o Deployment
 
