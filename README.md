@@ -27,7 +27,7 @@ kubectl get nodes
 
 # 2 Fazendo Deploy
 
-Quando uma aplicação é criada, o Kubernetes Deployment Controller monitora continuamente essa instância. Se o node hospedado cair ou for deletado, o Deployment Controller recoloca a instância com outro node no cluster. **Esta é um mecanismo de auto-recuperação para falhas de endereçamento ou manutenção**.
+Quando uma aplicação é criada, o Kubernetes Deployment Controller monitora continuamente essa instância. Se o node hospedado cair ou for deletado, o Deployment Controller recoloca a instância com outro node no cluster. **Este é um mecanismo de auto-recuperação para falhas de endereçamento ou manutenção**.
 
 ### Deploy do app no Kubernetes
 
@@ -35,7 +35,6 @@ Quando uma aplicação é criada, o Kubernetes Deployment Controller monitora co
 
 ### Launch Cluster
 ```bash
-minikube start --wait=false
 minikube start --wait=false
 ```
 ### Kubectl run
@@ -91,7 +90,7 @@ Algumas operações do Kubernetes:
 
 ### Services
 
-Um node  mortal. Ele tem ciclo de vida. Quando um node morre, os pods que rodam no nó ficam perdidos. O ReplicaSet deve então dinamicamente direcionar de volta ao estado desejado criando um novo pod para manter a aplicação rodando.
+Um node é mortal. Ele tem ciclo de vida. Quando um node morre, os pods que rodam no nó ficam perdidos. O ReplicaSet deve então dinamicamente direcionar de volta ao estado desejado criando um novo pod para manter a aplicação rodando.
 Um `service` é uma abstração que define um conjunto lógico de Pods e uma política para poder acessá-los. 
 Como os pods possuem um único IP, esses IPs não ficam expostos ao cluster sem um service.
 Services podem ser expostos em diferentes formas especificando um `type` no ServiceSpec.
