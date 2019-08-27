@@ -150,10 +150,47 @@ curl $(minikube ip):$NODE_PORT
 kubectl exec -ti $POD_NAME curl localhost:8080
 ```
 
+# 5 Escalando o app
+
+Nos processos anteriores, nós subimos apenas um pod rodando a aplicação. Quando o tráfego aumenta, precisamos escalar nossa aplicação para suprir a demanda.
+
+![](https://d33wubrfki0l68.cloudfront.net/043eb67914e9474e30a303553d5a4c6c7301f378/0d8f6/docs/tutorials/kubernetes-basics/public/images/module_05_scaling1.svg)
+
+![](https://d33wubrfki0l68.cloudfront.net/30f75140a581110443397192d70a4cdb37df7bfc/b5f56/docs/tutorials/kubernetes-basics/public/images/module_05_scaling2.svg)
+
+> O escalonamento é realizado alterando o número de réplicas em uma implantação.
+
+### Escalando o Deployment
+
+```bash
+kubectl get deployments
+kubectl scale deployments/kubernetes-bootcamp --replicas=4
+kubectl get deployments
+kubectl get pods -o wide
+kubectl describe deployments/kubernetes-bootcamp
+```
+
+### Balanceamento de carga (Load Balancing)
+
+```bash
+kubectl describe services/kubernetes-bootcamp
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+curl $(minikube ip):$NODE_PORT
+```
+
+### Desescalando (Scale Down)
+
+```bash
+kubectl scale deployments/kubernetes-bootcamp --replicas=2
+kubectl get deployments
+kubectl get pods -o wide
+```
+
 ```bash
 
 ```
-
 
 
 ### Criando o Deployment
