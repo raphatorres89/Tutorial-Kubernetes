@@ -96,9 +96,9 @@ Como os pods possuem um único IP, esses IPs não ficam expostos ao cluster sem 
 Services podem ser expostos em diferentes formas especificando um `type` no ServiceSpec.
 
 - ClusterIP    | Expõe o Service em um IP interno no cluster. Service fica disponível apenas dentro do cluster.
-- NodePort     | Expõe o Service na mesma porta do Node selecionado no cluster utilizando NAT. Possível acesso externo utilizando `<NodeIP>:<NodePort>
+- NodePort     | Expõe o Service na mesma porta do Node selecionado no cluster utilizando NAT. Possível acesso externo utilizando `<NodeIP>:<NodePort>`
 - LoadBalancer | Cria um loadBalancer na núvem atual e define um IP externo fixo ao service.
-- ExternalName | Expõe o Service utiliazndo um nome arbitrário (especificado pelo `externalName`) retornando um CNAME. Nenhum proxy é utilizado. Requer a v1.7 ou maior do `kube-dns`.
+- ExternalName | Expõe o Service utilizando um nome arbitrário (especificado pelo `externalName`) retornando um CNAME. Nenhum proxy é utilizado. Requer a v1.7 ou maior do `kube-dns`.
 
 ![](https://d33wubrfki0l68.cloudfront.net/cc38b0f3c0fd94e66495e3a4198f2096cdecd3d5/ace10/docs/tutorials/kubernetes-basics/public/images/module_04_services.svg)
 
@@ -187,7 +187,7 @@ kubectl get deployments
 kubectl get pods -o wide
 ```
 
-# Atualizando o app
+# 6 Atualizando o app
 
 Usuários esperam que aplicações estejam disponíveis o tempo todo, e desenvolvedores esperam poder criar deploys várias vezes ao dia. No Kubernetes isto é feito através do rolling updates.
 *Rolling Updates* permitem atualização de Deployments com zero downtime ao incrementar atualizações aos Pods.
